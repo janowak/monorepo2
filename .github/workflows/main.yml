@@ -1,0 +1,21 @@
+on:
+  pull_request_target:
+    types:
+      - ready_for_review
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+jobs:
+  should-run:
+    name: Should Run Preview Environment Provisioning?
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print variables
+        id: print_variables
+        run: |
+          echo "dupa"
+          echo "::action::${{ github.event.action }}"
+          echo "::label::${{ github.event.label.name }}"
+          echo "::event_name::${{ github.event_name }}"
+          echo "::contains::${{ contains(github.event.pull_request.labels.*.name, 'env:with_preview') }}"
