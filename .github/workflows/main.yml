@@ -32,5 +32,5 @@ jobs:
         id: print_variables_2
         run: |
           echo "2"
-          echo "${{needs.should-run.outputs.should-run}}
+          echo "${{needs.should-run.outputs.should-run}}"
           
