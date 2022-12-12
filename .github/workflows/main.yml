@@ -15,6 +15,7 @@ jobs:
       (github.event.action == 'labeled' && github.event.label.name == 'env:withPreview') ||
           (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'env:with_preview')) ||
           (github.event_name == 'workflow_dispatch')
+      )
     outputs:
       should-run: ${{ steps.changed-files.outputs.any_changed == "true" }}
     steps:
