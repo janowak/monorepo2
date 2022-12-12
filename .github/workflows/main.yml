@@ -10,12 +10,27 @@ jobs:
   should-run:
     name: Should Run Preview Environment Provisioning?
     runs-on: ubuntu-latest
+    outputs:
+      should-run: |
+        always() &&
+        (
+          (github.event.action == 'labeled' && github.event.label.name == 'env:withPreview') ||
+          (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'env:with_preview')) ||
+          (github.event_name == 'workflow_dispatch')
+        )
     steps:
       - name: Print variables
         id: print_variables
         run: |
           echo "dupa"
-          echo "::action::${{ github.event.action }}"
-          echo "::label::${{ github.event.label.name }}"
-          echo "::event_name::${{ github.event_name }}"
-          echo "::contains::${{ contains(github.event.pull_request.labels.*.name, 'env:with_preview') }}"
+  test:
+    needs: should-run
+    name: "Test job"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print variables 2 
+        id: print_variables_2
+        run: |
+          echo "2"
+          echo "${{needs.should-run.outputs.should-run}}
+          
